@@ -156,6 +156,32 @@ body::before{
 .n-head{font-size:12.5px;color:var(--text);line-height:1.55;font-weight:400}
 .n-time{font-size:9px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace}
 
+/* NEWS LIVE HEADER */
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(34,211,165,0.7)}60%{box-shadow:0 0 0 6px rgba(34,211,165,0)}}
+.news-live-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 6px}
+.nlive{display:flex;align-items:center;gap:5px}
+.nldot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse-green 1.5s ease-out infinite}
+.nlive-lbl{font-size:9px;font-weight:700;color:var(--green);letter-spacing:1.5px;font-family:'JetBrains Mono',monospace}
+.news-ts{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.news-refresh{background:none;border:1.5px solid var(--border2);color:var(--text2);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;line-height:1}
+.news-refresh:hover{border-color:var(--green);color:var(--green)}
+@keyframes spin-btn{to{transform:rotate(360deg)}}
+.news-refresh.spinning{animation:spin-btn .6s linear}
+/* SOURCE BADGES */
+.src-badge{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.3px}
+.src-reuters{background:rgba(239,68,68,0.15);color:#ef4444}
+.src-cnbc{background:rgba(96,165,250,0.15);color:var(--blue)}
+.src-marketwatch{background:rgba(34,211,165,0.15);color:var(--green)}
+.src-other{background:rgba(240,238,255,0.06);color:var(--text3)}
+/* TICKER TAGS */
+.tick-tag{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(168,85,247,0.12);color:var(--purple);letter-spacing:.5px}
+/* BREAKING BADGE */
+.brk-badge{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(244,63,94,0.18);color:var(--red);letter-spacing:1px;border:1px solid rgba(244,63,94,0.3)}
+/* QUALITY DOTS */
+.qdots{display:inline-flex;gap:3px;align-items:center}
+.qdot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.qdot.dim{opacity:.2}
+
 /* CHARTS */
 .chart-row{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:transparent}
 .chart-input{flex:1;background:var(--surf2);border:1.5px solid var(--border2);color:var(--text);padding:12px 16px;border-radius:14px;font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;outline:none;letter-spacing:1px;text-transform:uppercase;transition:border-color .2s}
@@ -271,9 +297,16 @@ body::before{
 
 <!-- NEWS -->
 <div class="tab-content" id="tab-news">
-  <div class="sec-h">
-    <div class="sec-t">Live News Terminal</div>
-    <div id="news-count" class="sec-t" style="letter-spacing:1px">Loading...</div>
+  <div class="news-live-bar">
+    <div>
+      <div class="sec-t">Live News Terminal</div>
+      <div id="news-count" style="font-size:8px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:3px;letter-spacing:1px">Loading...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="news-ts" id="news-ts">—</div>
+      <div class="nlive"><div class="nldot"></div><div class="nlive-lbl">LIVE</div></div>
+      <button class="news-refresh" id="news-refresh-btn" onclick="forceRefreshNews()">↻</button>
+    </div>
   </div>
   <div style="display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto">
     <div class="pill on" style="font-size:10px;padding:5px 12px" onclick="filterNews(this,'all')">All</div>
@@ -371,7 +404,7 @@ body::before{
 <script>
 var RAW = 'https://raw.githubusercontent.com/Shrivathsav123/MeritQuant/main/data';
 var KEY = localStorage.getItem('meritquant_api_key') || '';
-var signals = [], newsAll = [], newsFilter = 'all', activeFil = 'All', curTicker = 'NVDA', chatHistory = [], lightMode = false;
+var signals = [], newsAll = [], newsFilter = 'all', activeFil = 'All', curTicker = 'NVDA', chatHistory = [], lightMode = false, newsLastFetch = null;
 
 function toggleMode() {
   lightMode = !lightMode;
@@ -478,12 +511,12 @@ async function fetchData() {
 
   var news = await gj(RAW + '/news_feed.json');
   if (news && news.length) {
-    newsAll = news; renderNews();
+    newsAll = news; newsLastFetch = Date.now(); renderNews();
     document.getElementById('news-count').textContent = news.length+' ARTICLES';
   } else if (signals.length) {
     var fb = [];
     signals.forEach(function(s){if(s.news_signals&&s.news_signals.length)s.news_signals.forEach(function(n){fb.push({title:n.title||n,source:n.source||'MeritQuant Scanner',tickers:[s.ticker],bull:(n.score||0)>0,bear:(n.score||0)<0,recent:true});});});
-    if (fb.length){newsAll=fb;renderNews();document.getElementById('news-count').textContent=fb.length+' SIGNALS';}
+    if (fb.length){newsAll=fb;newsLastFetch=Date.now();renderNews();document.getElementById('news-count').textContent=fb.length+' SIGNALS';}
   }
 
   var reddit = await gj(RAW + '/reddit.json');
@@ -557,19 +590,62 @@ function renderPortfolio(port) {
 
 function renderNews() {
   var c=document.getElementById('news-box'); if(!c) return;
-  var f=newsAll;
-  if(newsFilter==='bull') f=newsAll.filter(function(a){return a.bull;});
-  else if(newsFilter==='bear') f=newsAll.filter(function(a){return a.bear;});
-  else if(newsFilter==='recent') f=newsAll.filter(function(a){return a.recent;});
+  var sorted=newsAll.slice().sort(function(a,b){
+    var ba=a.is_breaking?1:0, bb=b.is_breaking?1:0;
+    if(bb!==ba) return bb-ba;
+    var qa=a.quality_score||0, qb=b.quality_score||0;
+    if(qb!==qa) return qb-qa;
+    var da=a.published_date||a.date||'', db=b.published_date||b.date||'';
+    return db>da?1:db<da?-1:0;
+  });
+  var f=sorted.filter(function(a){return a.quality_score===undefined||a.quality_score!==0;});
+  if(newsFilter==='bull') f=f.filter(function(a){return a.bull;});
+  else if(newsFilter==='bear') f=f.filter(function(a){return a.bear;});
+  else if(newsFilter==='recent') f=f.filter(function(a){return a.recent;});
   if(!f.length){c.innerHTML='<div class="empty"><div class="empty-icon">📡</div>No articles found</div>';return;}
   var html='';
   f.slice(0,40).forEach(function(a){
-    var tag=(a.tickers||[])[0]||'MKT',isBull=a.bull,isBear=a.bear;
-    var sentText=isBull?'BULLISH':isBear?'BEARISH':'NEUTRAL';
+    var srcRaw=(a.source||'').toLowerCase();
+    var srcClass=srcRaw.indexOf('reuters')>=0?'src-reuters':srcRaw.indexOf('cnbc')>=0?'src-cnbc':srcRaw.indexOf('marketwatch')>=0?'src-marketwatch':'src-other';
+    var brkHtml=a.is_breaking?'<span class="brk-badge">BREAKING</span>':'';
+    var tickHtml=(a.tickers||[]).slice(0,4).map(function(t){return '<span class="tick-tag">$'+t+'</span>';}).join('');
+    var qs=a.quality_score!==undefined?(a.quality_score>=7?3:a.quality_score>=4?2:1):0;
+    var dotsHtml=qs>0?'<span class="qdots">'+[1,2,3].map(function(i){return '<span class="qdot'+(i>qs?' dim':'')+'"></span>';}).join('')+'</span>':'';
+    var isBull=a.bull,isBear=a.bear;
     var sentCol=isBull?'var(--green)':isBear?'var(--red)':'var(--text3)';
-    html+='<div class="ni" onclick="window.open(\''+(a.link||'#')+'\',\'_blank\')"><div><div class="ntag '+(isBull?'u':'d')+'">'+tag+'</div></div><div><div class="n-head">'+(a.title||'')+'</div><div class="n-time"><span style="color:'+sentCol+';font-weight:700">'+sentText+'</span> · '+(a.source||'News')+'</div></div></div>';
+    var sentText=isBull?'BULLISH':isBear?'BEARISH':'NEUTRAL';
+    var timeStr=a.published_date?a.published_date.replace('T',' ').slice(0,16):(a.date||'');
+    html+='<div class="ni" onclick="window.open(\''+(a.link||'#')+'\',\'_blank\')">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:6px">'
+      +brkHtml
+      +'<span class="src-badge '+srcClass+'">'+(a.source||'News')+'</span>'
+      +tickHtml
+      +dotsHtml
+      +'</div>'
+      +'<div class="n-head">'+(a.title||'')+'</div>'
+      +'<div class="n-time"><span style="color:'+sentCol+';font-weight:700">'+sentText+'</span>'+(timeStr?' · '+timeStr:'')+'</div>'
+      +'</div>'
+      +'</div>';
   });
   c.innerHTML=html;
+}
+
+async function fetchNewsOnly() {
+  var news=await gj(RAW+'/news_feed.json');
+  if(news&&news.length){
+    newsAll=news; newsLastFetch=Date.now(); renderNews();
+    document.getElementById('news-count').textContent=news.length+' ARTICLES';
+  }
+}
+
+function forceRefreshNews() {
+  var btn=document.getElementById('news-refresh-btn');
+  if(btn) btn.classList.add('spinning');
+  fetchNewsOnly().then(function(){
+    var b=document.getElementById('news-refresh-btn');
+    if(b) setTimeout(function(){b.classList.remove('spinning');},600);
+  });
 }
 
 function renderReddit(data) {
@@ -629,8 +705,14 @@ document.addEventListener('DOMContentLoaded',function(){
   if(!KEY) document.getElementById('api-banner').style.display='block';
   fetchData();
   setInterval(fetchData,5*60*1000);
+  setInterval(fetchNewsOnly,60*1000);
+  setInterval(function(){
+    var el=document.getElementById('news-ts');
+    if(!el||!newsLastFetch) return;
+    var sec=Math.floor((Date.now()-newsLastFetch)/1000);
+    el.textContent='Updated '+sec+'s ago';
+  },1000);
 });
 </script>
 </body>
 </html>
-
