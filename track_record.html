@@ -26,6 +26,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hstat-label{font-size:9px;letter-spacing:2.5px;color:var(--text3);text-transform:uppercase;font-weight:700;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
 .hstat-val{font-size:24px;font-weight:800;letter-spacing:-1px}
 .hstat-sub{font-size:10px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.hdr-right{text-align:right}
+.hdr-ts{font-size:9px;letter-spacing:1px;color:rgba(240,238,255,0.2);font-family:'JetBrains Mono',monospace;margin-top:3px}
+#s-pnl{font-size:13px;font-weight:700;letter-spacing:-.3px}
 .chart-card{background:rgba(139,92,246,0.04);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:28px}
 .card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .card-title{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;font-weight:700;font-family:'JetBrains Mono',monospace}
@@ -58,7 +61,10 @@ tr:hover td{background:rgba(139,92,246,0.04)}
 <body>
 <div class="hdr">
   <div class="logo">MERIT<em>QUANT</em></div>
+  <div class="hdr-right">
   <div class="hdr-tag">Live Track Record — Paper Portfolio</div>
+  <div class="hdr-ts" id="last-updated">—</div>
+</div>
 </div>
 <div class="page">
   <div class="hero">
@@ -164,6 +170,8 @@ async function load(){
     var closedDesc=closed.slice().reverse();
     if(!closedDesc.length){lb.innerHTML='<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--text3);font-family:JetBrains Mono,monospace;font-size:12px">No closed trades yet</td></tr>';}
     else{lb.innerHTML=closedDesc.map(function(t){var pu=t.pnl_usd||0,pp=t.pnl_pct||0;var win=pu>0;return '<tr><td><span class="ticker" style="color:'+(win?'var(--green)':'var(--red)')+'">$'+t.ticker+'</span></td><td><span class="badge b-'+(win?'win':'loss')+'">'+(t.type||'CLOSE')+'</span></td><td class="date-text">$'+(t.entry_price||0).toFixed(2)+'</td><td class="date-text">$'+(t.exit_price||0).toFixed(2)+'</td><td class="'+(win?'pnl-pos':'pnl-neg')+'">'+(pu>=0?'+':'')+fmt(pu)+'</td><td class="'+(win?'pnl-pos':'pnl-neg')+'">'+(pp>=0?'+':'')+pp.toFixed(1)+'%</td><td><span class="badge b-'+(win?'win':'loss')+'">'+(win?'WIN':'LOSS')+'</span></td><td class="thesis-text">'+(t.exit_reason||'—').slice(0,80)+'</td></tr>';}).join('');}
+    var now=new Date();
+    document.getElementById('last-updated').textContent='Last updated '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   }
 }
 load();
