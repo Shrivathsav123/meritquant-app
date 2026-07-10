@@ -8,51 +8,54 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#04040d;--surf:rgba(139,92,246,0.06);--border:rgba(139,92,246,0.12);
-  --border2:rgba(139,92,246,0.25);--text:#f0eeff;--text2:rgba(240,238,255,0.55);
-  --text3:rgba(240,238,255,0.25);--green:#22d3a5;--red:#f43f5e;
-  --gold:#f59e0b;--purple:#a855f7;--blue:#60a5fa;
+  --bg:#050505;--bg2:#0c0c0c;
+  --surf:rgba(212,175,55,0.05);--surf2:rgba(212,175,55,0.09);
+  --border:rgba(212,175,55,0.13);--border2:rgba(212,175,55,0.26);
+  --text:#f5f0e6;--text2:rgba(245,240,230,0.55);--text3:rgba(245,240,230,0.28);
+  --hdr:rgba(5,5,5,0.94);--card:rgba(212,175,55,0.04);
+  --green:#22d3a5;--red:#f43f5e;--gold:#d4af37;--gold2:#f5d478;--gold3:#9c7a3c;--blue:#60a5fa;
+  --glow:rgba(212,175,55,0.15);
 }
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;padding:0 0 60px}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(139,92,246,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(168,85,247,0.05) 0%,transparent 50%);pointer-events:none;z-index:0}
-.hdr{background:rgba(4,4,13,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(212,175,55,0.05) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(245,212,120,0.03) 0%,transparent 50%);pointer-events:none;z-index:0}
+.hdr{background:rgba(5,5,5,0.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
 .logo{font-size:16px;font-weight:800;letter-spacing:-.5px}
-.logo em{font-style:normal;background:linear-gradient(135deg,#a855f7,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo em{font-style:normal;background:linear-gradient(135deg,#d4af37,#f5d478,#9c7a3c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hdr-tag{font-size:9px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;font-family:'JetBrains Mono',monospace}
 .page{max-width:900px;margin:0 auto;padding:32px 20px;position:relative;z-index:1}
 .hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
-.hstat{background:rgba(139,92,246,0.06);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
-.hstat.highlight{border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.1);box-shadow:0 0 30px rgba(139,92,246,0.1)}
+.hstat{background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
+.hstat.highlight{border-color:rgba(212,175,55,0.3);background:rgba(212,175,55,0.08);box-shadow:0 0 30px rgba(212,175,55,0.1)}
 .hstat-label{font-size:9px;letter-spacing:2.5px;color:var(--text3);text-transform:uppercase;font-weight:700;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
 .hstat-val{font-size:24px;font-weight:800;letter-spacing:-1px}
 .hstat-sub{font-size:10px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace}
 .hdr-right{text-align:right}
-.hdr-ts{font-size:9px;letter-spacing:1px;color:rgba(240,238,255,0.2);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.hdr-ts{font-size:9px;letter-spacing:1px;color:rgba(245,240,230,0.2);font-family:'JetBrains Mono',monospace;margin-top:3px}
 #s-pnl{font-size:13px;font-weight:700;letter-spacing:-.3px}
-.chart-card{background:rgba(139,92,246,0.04);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:28px}
+.chart-card{background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:28px}
 .card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .card-title{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;font-weight:700;font-family:'JetBrains Mono',monospace}
 .chart-wrap{height:200px;position:relative}
 svg.equity{width:100%;height:100%}
 .sec-hdr{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:14px}
-.trade-card{background:rgba(139,92,246,0.04);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.trade-card{background:rgba(212,175,55,0.03);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);background:rgba(139,92,246,0.04)}
-td{padding:14px 16px;border-bottom:1px solid rgba(139,92,246,0.06);vertical-align:top}
+th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);background:rgba(212,175,55,0.03)}
+td{padding:14px 16px;border-bottom:1px solid rgba(212,175,55,0.07);vertical-align:top}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(139,92,246,0.04)}
+tr:hover td{background:rgba(212,175,55,0.04)}
 .ticker{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
 .badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.5px}
 .b-win{background:rgba(34,211,165,0.12);color:var(--green)}
 .b-loss{background:rgba(244,63,94,0.1);color:var(--red)}
-.b-open{background:rgba(168,85,247,0.1);color:var(--purple)}
+.b-open{background:rgba(212,175,55,0.1);color:var(--gold);border:1px solid rgba(212,175,55,0.2)}
 .pnl-pos{color:var(--green);font-weight:700;font-family:'JetBrains Mono',monospace}
 .pnl-neg{color:var(--red);font-weight:700;font-family:'JetBrains Mono',monospace}
 .thesis-text{font-size:11px;color:var(--text2);line-height:1.6;max-width:300px}
 .date-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)}
 .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
-.mbox{background:rgba(139,92,246,0.04);border:1px solid var(--border);border-radius:14px;padding:18px}
-.mbox h4{font-size:10px;letter-spacing:2px;color:var(--purple);text-transform:uppercase;font-weight:700;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+.mbox{background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+.mbox h4{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
 .mbox p{font-size:12px;color:var(--text2);line-height:1.7}
 .loading{text-align:center;padding:60px;color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:13px}
 .footer{text-align:center;margin-top:40px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:1px}
@@ -71,7 +74,7 @@ tr:hover td{background:rgba(139,92,246,0.04)}
     <div class="hstat"><div class="hstat-label">Starting Capital</div><div class="hstat-val" style="color:var(--blue)">$183,000</div><div class="hstat-sub">Mar 27, 2026</div></div>
     <div class="hstat highlight"><div class="hstat-label">Current Value</div><div class="hstat-val" id="s-val" style="color:var(--text)">—</div><div class="hstat-sub" id="s-pnl">Loading...</div></div>
     <div class="hstat"><div class="hstat-label">Win Rate</div><div class="hstat-val" id="s-wr" style="color:var(--gold)">—</div><div class="hstat-sub" id="s-trades">— trades</div></div>
-    <div class="hstat"><div class="hstat-label">Open Positions</div><div class="hstat-val" id="s-pos" style="color:var(--purple)">—</div><div class="hstat-sub" id="s-cash">Cash: —</div></div>
+    <div class="hstat"><div class="hstat-label">Open Positions</div><div class="hstat-val" id="s-pos" style="color:var(--gold)">—</div><div class="hstat-sub" id="s-cash">Cash: —</div></div>
   </div>
   <div class="chart-card">
     <div class="card-hdr">
@@ -80,21 +83,21 @@ tr:hover td{background:rgba(139,92,246,0.04)}
     </div>
     <div class="chart-wrap">
       <svg class="equity" id="equity-svg" viewBox="0 0 800 180" preserveAspectRatio="none">
-        <text x="400" y="90" text-anchor="middle" fill="rgba(168,85,247,0.3)" font-family="JetBrains Mono" font-size="13">Loading equity data...</text>
+        <text x="400" y="90" text-anchor="middle" fill="rgba(212,175,55,0.3)" font-family="JetBrains Mono" font-size="13">Loading equity data...</text>
       </svg>
     </div>
   </div>
   <div class="sec-hdr">Open Positions</div>
   <div class="trade-card">
     <table>
-      <thead><tr><th>Ticker</th><th>Entry</th><th>Shares</th><th>P&L</th><th>Thesis</th><th>Entry Date</th></tr></thead>
+      <thead><tr><th>Ticker</th><th>Entry</th><th>Shares</th><th>P&amp;L</th><th>Thesis</th><th>Entry Date</th></tr></thead>
       <tbody id="pos-body"><tr><td colspan="6" class="loading">Loading positions...</td></tr></tbody>
     </table>
   </div>
   <div class="sec-hdr">Closed Trade Log</div>
   <div class="trade-card">
     <table>
-      <thead><tr><th>Ticker</th><th>Type</th><th>Entry</th><th>Exit</th><th>P&L $</th><th>P&L %</th><th>Result</th><th>Exit Reason</th></tr></thead>
+      <thead><tr><th>Ticker</th><th>Type</th><th>Entry</th><th>Exit</th><th>P&amp;L $</th><th>P&amp;L %</th><th>Result</th><th>Exit Reason</th></tr></thead>
       <tbody id="log-body"><tr><td colspan="8" class="loading">Loading trade log...</td></tr></tbody>
     </table>
   </div>
