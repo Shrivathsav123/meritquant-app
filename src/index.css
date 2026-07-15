@@ -1,0 +1,39 @@
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+@import '@fontsource/geist-mono/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource/inter/400.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  html {
+    @apply bg-void-base text-white antialiased;
+  }
+  body {
+    @apply font-interface;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  ::selection {
+    @apply bg-catalyst/40 text-white;
+  }
+}
+@layer components {
+  .glass-surface {
+    @apply bg-void-surface/60 backdrop-blur-xl border border-white/10
+           shadow-glass-inset transition-all duration-300 ease-out-expo;
+  }
+}
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
