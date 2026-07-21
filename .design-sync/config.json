@@ -1,0 +1,37 @@
+{
+  "projectId": "aac3d778-deb6-4750-bae2-85763d490c47",
+  "shape": "package",
+  "pkg": "meritquant-app-ui",
+  "globalName": "MeritQuantUI",
+  "srcDir": "src/components",
+  "readmeHeader": ".design-sync/conventions.md",
+  "tsconfig": "tsconfig.app.json",
+  "cssEntry": ".design-sync/.cache/compiled-tailwind.css",
+  "extraFonts": [
+    "node_modules/@fontsource/geist-mono/400.css",
+    "node_modules/@fontsource/geist-mono/500.css",
+    "node_modules/@fontsource/geist-mono/700.css",
+    "node_modules/@fontsource/jetbrains-mono/400.css",
+    "node_modules/@fontsource/plus-jakarta-sans/400.css",
+    "node_modules/@fontsource/plus-jakarta-sans/600.css",
+    "node_modules/@fontsource/plus-jakarta-sans/700.css",
+    "node_modules/@fontsource/inter/400.css"
+  ],
+  "overrides": {
+    "FilterPillRow": { "cardMode": "column" }
+  },
+  "componentSrcMap": {
+    "AIChannel": null,
+    "ChartsChannel": null,
+    "MacroGrid": null,
+    "MasterChart": null,
+    "SignalDetailModal": null,
+    "FloatingDock": null,
+    "NewsTerminal": null,
+    "BentoMetricRow": null,
+    "HeroPanel": null,
+    "PortfolioChannel": null,
+    "SignalCard": null,
+    "SignalsChannel": null
+  }
+}
