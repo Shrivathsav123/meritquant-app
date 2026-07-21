@@ -37,6 +37,9 @@ export function resolveProvider(): Promise<BrokerDataProvider> {
   if (import.meta.env.VITE_BROKER_PROVIDER === 'mock') {
     return import('./mockProvider').then((m) => m.createMockProvider());
   }
+  if (import.meta.env.VITE_BROKER_PROVIDER === 'github') {
+    return import('./githubDataProvider').then((m) => m.createGithubDataProvider());
+  }
   return import('./restProvider').then((m) =>
     m.createRestProvider({
       apiBase: import.meta.env.VITE_API_BASE,

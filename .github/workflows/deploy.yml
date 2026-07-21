@@ -31,7 +31,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BROKER_PROVIDER: mock
+          VITE_BROKER_PROVIDER: github
 
       - uses: actions/upload-pages-artifact@v3
         with:
